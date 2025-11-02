@@ -6,13 +6,13 @@ A simple program which determines potential underserved areas for podiatry by co
 Data is pulled from the Department of Health and Human Services (NPI registrations to represent podiatrists) and the Centers for Disease Control and Prevention (ailment data). Initial design will be based on uploading CSV files from the sources to a SQL database, however it is designed with the idea of eventually being API based. Once data is cleaned and loaded, we can begin running our analysis.
 
 ### Analysis
-First, baseline Z-scores are generated for each ailment and each county based on national prevelance. These will be used to represent the rate of each ailment in any given county. The number of podiatrists with respect to population can be modeled with the following equation for any single county, assuming a linear association:
+First, baseline Z-scores are generated for each ailment and each county based on national prevelance. These will be used to represent the rate of each ailment in any given county. The number of podiatrists with respect to population can be modeled with the following equation for any single county..
 
-$$P<sub>per 10k pop</sub> = β_d Diabetes + β_a Arthritis + ...$$
+$$log(podiatrists) = log(population) + β_0 + β_d Diabetes + β_a Arthritis + ...$$
 
-We will take 10000 counties at random to find the best coefficients using multiple linear regression. This will yield our expected coefficients which, when placed into our equation, should allow us to estimate the demand for podiatrists for any county based on their population. NOTE: Only counties with populations over 10k adults will be considered to prevent smaller areas from skewing the data.
+We will take our 3000 counties to find the best coefficients using Plisson regression. This will yield our expected coefficients which, when placed into our equation, should allow us to estimate the demand for podiatrists for any county based on their population.
 
-Given our baselines, we will take the predicted population data from the US Census to generate our estimated need for podiatrists across all counties that meet our population requirement. We will then compute the difference between the number of podiatrists we predict are needed and the number of podiatrists currently in the county to find how many more or less are needed in each area.
+Given our baselines, we calculate our estimated podiatrists required for all counties in our dataset. We will then compute the difference between the number of podiatrists we predict are needed and the number of podiatrists currently in the county to find how many more or less are needed in each area.
 
 ## Considerations
 This analysis, as presently designed (10/27/2025) makes some assumptions which, for more accuracy, would need to be rectified. Below are some of these oversights and assumptions that I acknowledge in its design. There may be more which I have not recognized, and I welcome anyone and everyone to create an issue or send me a message to bring these unacknowledged caveats to light. As I maintain the project, some will be addressed and will then be marked through here.
