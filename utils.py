@@ -3,7 +3,7 @@ import pandas as pd
 import statsmodels.api as smapi
 import numpy as np
 
-def loadDataFrame(fileName: str) -> df | None:
+def loadDataFrameFromCSV(fileName: str) -> df | None:
     try:
         dFrame = pd.read_csv(fileName)
     except:
@@ -26,3 +26,13 @@ def fitModel(dFrame: df, depVar: str, indVars: list[str], oset:str | None = None
     result = model.fit()
 
     return result
+
+def showModelSummary(results) -> None:
+    print(results.summary())
+
+def isOverdispersed(dFrame: df, depVar: str) -> bool:
+    y = dFrame[depVar]
+    mean = y.mean()
+    variance = y.var()
+    assert variance is float
+    return variance > (mean * 1.5)
